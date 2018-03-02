@@ -1,26 +1,28 @@
 class Eventer{
   constructor(){
-    this.rooms = new Array({title: "abs", subscribers: []});
+    this.rooms = {
+      abs: {
+        subscribers: []
+      }
+    };
   }
 
 subscribe (onPublish, title){
-    this.rooms.forEach(function(room){
-      if(room.title == title){
-          room.subscribers.push(onPublish);
-      }
-    })
+    if(title in this.rooms){
+          this.rooms[title].subscribers.push(onPublish);
+    }
   }
 
-publText (sometext, title){
-    this.rooms.forEach(function(room){
-      if(room.title == title){
-        room.subscribers.forEach(function(subscriber) {
-        subscriber(sometext);
+  publText (sometext, title){
+      if(title in this.rooms){
+          this.rooms[title].subscribers.forEach(function(subscriber) {
+          subscriber(sometext);
         })
       }
-    })
   }
 }
+
+
 
 
 
