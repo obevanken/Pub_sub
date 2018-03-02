@@ -1,27 +1,28 @@
-class Publisher {
-  publish (sometext, eventer){
-    eventer.publText(sometext);
-    }
-}
-
 class Eventer{
   constructor(){
-     this.subscribers = new Array();
+    this.rooms = new Array({title: "abs", subscribers: []});
   }
 
-  subscribe (onPublish){
-    this.subscribers.push(onPublish);
+subscribe (onPublish, title){
+    this.rooms.forEach(function(room){
+      if(room.title == title){
+          room.subscribers.push(onPublish);
+      }
+    })
   }
-  publText (sometext){
-    this.subscribers.forEach(function(subscriber) {
+
+publText (sometext, title){
+    this.rooms.forEach(function(room){
+      if(room.title == title){
+        room.subscribers.forEach(function(subscriber) {
         subscriber(sometext);
-    });
+        })
+      }
+    })
   }
 }
 
-var andrey = new Publisher();
-var blog = new Eventer();
-var vk = new Eventer();
+
 
 var Sasha = {
     tell: (news) => {
@@ -35,10 +36,8 @@ var Masha = {
     }
 };
 
-blog.subscribe(Sasha.tell);
-blog.subscribe(Masha.think);
-vk.subscribe(Sasha.tell);
+var eventer = new Eventer();
 
-
-andrey.publish("This vk", vk);
-andrey.publish("Heeeey", blog);
+eventer.subscribe(Sasha.tell, "abs");
+eventer.subscribe(Masha.think, "abs");
+eventer.publText("Heeey", "abs");
