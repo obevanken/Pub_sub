@@ -21,6 +21,7 @@ class Eventer{
 
 var andrey = new Publisher();
 var blog = new Eventer();
+var vk = new Eventer();
 
 var Sasha = {
     tell: (news) => {
@@ -36,5 +37,8 @@ var Masha = {
 
 blog.subscribe(Sasha.tell);
 blog.subscribe(Masha.think);
+vk.subscribe(Sasha.tell);
 
+
+andrey.publish("This vk", vk);
 andrey.publish("Heeeey", blog);
