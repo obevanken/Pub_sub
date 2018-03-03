@@ -1,21 +1,20 @@
 class Eventer{
   constructor(){
-    this.rooms = {
-      abs: {
-        subscribers: []
-      }
-    };
+    this.rooms = {};
   }
 
 subscribe (onPublish, title){
+  if(!Array.isArray(this.rooms[title])){
+    this.rooms[title] = [];
+  }
     if(title in this.rooms){
-          this.rooms[title].subscribers.push(onPublish);
+          this.rooms[title].push(onPublish);
     }
   }
 
   publText (sometext, title){
       if(title in this.rooms){
-          this.rooms[title].subscribers.forEach(function(subscriber) {
+          this.rooms[title].forEach(function(subscriber) {
           subscriber(sometext);
         })
       }
@@ -41,5 +40,6 @@ var Masha = {
 var eventer = new Eventer();
 
 eventer.subscribe(Sasha.tell, "abs");
-eventer.subscribe(Masha.think, "abs");
+eventer.subscribe(Masha.think, "bca");
 eventer.publText("Heeey", "abs");
+eventer.publText("Привет", "bca");
